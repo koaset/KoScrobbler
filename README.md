@@ -1,0 +1,2 @@
+# KoScrobbler
+Simple lastfm scrobbler

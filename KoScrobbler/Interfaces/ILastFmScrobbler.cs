@@ -1,12 +1,11 @@
-﻿using System;
+﻿using KoScrobbler.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KoScrobbler.Interfaces
 {
     public interface ILastFmScrobbler
     {
+        string GetSessionToken(string userName, string password);
+        LastFmResponseBase TryScrobble(List<Scrobble> scrobbles);
     }
 }

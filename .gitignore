@@ -1,5 +1,6 @@
 ConsoleScrobbler/
 KoScrobbler/bin/
 KoScrobbler/obj/
+packages/
 KoScrobbler.sln
 .vs

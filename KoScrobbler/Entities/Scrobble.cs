@@ -9,7 +9,7 @@ namespace KoScrobbler.Entities
         public string Album { get; set; }
         public DateTime TimePlayed { get; set; }
 
-        public Scrobble (string title, string artist, string album, DateTime timePlayed)
+        public Scrobble (string artist, string album, string title, DateTime timePlayed)
         {
             Title = title;
             Artist = artist;

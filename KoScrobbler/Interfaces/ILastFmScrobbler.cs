@@ -5,7 +5,7 @@ namespace KoScrobbler.Interfaces
 {
     public interface ILastFmScrobbler
     {
-        string GetSessionToken(string userName, string password);
-        LastFmResponseBase TryScrobble(List<Scrobble> scrobbles);
+        string GetMobileSession(string userName, string password);
+        void TryScrobble(List<Scrobble> scrobbles);
     }
 }

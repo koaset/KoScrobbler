@@ -1,13 +1,7 @@
 ﻿namespace KoScrobbler.Entities
 {
-    public class GetSessionResponse
+    public class GetSessionResponse : RequestResponseBase
     {
-        public Session Session { get; set; }
-    }
-
-    public class Session
-    {
-        public string Name { get; set; }
-        public string Key { get; set; }
+        public string SessionKey { get; set; }
     }
 }

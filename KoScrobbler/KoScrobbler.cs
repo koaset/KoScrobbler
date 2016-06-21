@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using KoScrobbler.Entities;
 using KoScrobbler.Entities.Exceptions;
+using KoScrobbler.Entities.LastFmApi;
 
 namespace KoScrobbler
 {
@@ -20,7 +21,7 @@ namespace KoScrobbler
             ApiSecret = apiSecret;
         }
 
-        public string GetMobileSession(string userName, string password)
+        public GetSessionResponse GetMobileSession(string userName, string password)
         {
             var method = "auth.getmobilesession";
 
@@ -30,18 +31,25 @@ namespace KoScrobbler
                 new KeyValuePair<string, string>("password", password)
             };
 
-            var response = GetClient().Post<GetSessionResponse>(method, parameters);;
-            
-            return response.Session.Key;
+            var response = TryPost<LastFmGetSessionResponse>(method, parameters);
+
+            if (response.Session == null)
+                return new GetSessionResponse();
+
+            return new GetSessionResponse()
+            {
+                SessionKey = response.Session.Key,
+                Success = true
+            };
         }
 
-        public void TryScrobble(List<Scrobble> scrobbles)
+        public bool TryScrobble(List<Scrobble> scrobbles)
         {
             var method = "track.scrobble";
 
             if (string.IsNullOrEmpty(SessionKey))
-                throw new SessionKeyInvalidException();          
-            
+                throw new SessionKeyInvalidException();
+
             var parameters = new List<KeyValuePair<string, string>>();
 
             for (int i = 0; i < scrobbles.Count; i++)
@@ -53,9 +61,24 @@ namespace KoScrobbler
                 parameters.Add(new KeyValuePair<string, string>($"timestamp[{i}]", unixTimestamp.ToString()));
                 parameters.Add(new KeyValuePair<string, string>($"chosenByUser[{i}]", "0"));
             }
-            
-            var httpResponse = GetClient().Post<object>(method, parameters);
+
+            var response = TryPost<LastFmScrobbleResponse>(method, parameters);
+
+            return response != null ? true : false;
         }
+
+        private T TryPost<T>(string method, List<KeyValuePair<string, string>> parameters) where  T : new()
+        {
+            try
+            {
+                return GetClient().Post<T>(method, parameters);
+            }
+            catch (WebRequestException)
+            {
+                return new T();
+            }
+        }
+    
 
         private LastFmApiClient GetClient()
         {

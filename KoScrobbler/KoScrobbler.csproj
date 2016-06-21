@@ -47,7 +47,9 @@
     <Compile Include="Entities\Exceptions\SessionKeyInvalidException.cs" />
     <Compile Include="Entities\Exceptions\WebRequestFailedException.cs" />
     <Compile Include="Entities\GetSessionResponse.cs" />
-    <Compile Include="Entities\GetTokenResponse.cs" />
+    <Compile Include="Entities\LastFmApi\LastFmGetSessionResponse.cs" />
+    <Compile Include="Entities\Base\RequestResponseBase.cs" />
+    <Compile Include="Entities\LastFmApi\LastFmScrobbleResponse.cs" />
     <Compile Include="Entities\Scrobble.cs" />
     <Compile Include="Interfaces\ILastFmScrobbler.cs" />
     <Compile Include="KoScrobbler.cs" />

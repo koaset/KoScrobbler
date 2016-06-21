@@ -25,14 +25,10 @@ namespace KoScrobbler
 
             var request = Client.PostAsync(string.Empty, content);
             
-            try
-            {
-                request.Wait();
-            }
-            catch
-            {
-                throw new WebRequestFailedException();
-            }
+            request.Wait();
+
+            if (request.Result.StatusCode != System.Net.HttpStatusCode.OK)
+                throw new WebRequestException(request.Result);
 
             return GetResponse<T>(request.Result);
         }

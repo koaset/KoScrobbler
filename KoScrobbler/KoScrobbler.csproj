@@ -51,6 +51,7 @@
     <Compile Include="Entities\Base\RequestResponseBase.cs" />
     <Compile Include="Entities\LastFmApi\LastFmScrobbleResponse.cs" />
     <Compile Include="Entities\Scrobble.cs" />
+    <Compile Include="Entities\ScrobbleResponse.cs" />
     <Compile Include="Interfaces\ILastFmScrobbler.cs" />
     <Compile Include="KoScrobbler.cs" />
     <Compile Include="LastFmApiClient.cs" />

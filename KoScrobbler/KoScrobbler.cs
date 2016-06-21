@@ -43,7 +43,7 @@ namespace KoScrobbler
             };
         }
 
-        public bool TryScrobble(List<Scrobble> scrobbles)
+        public ScrobbleResponse TryScrobble(List<Scrobble> scrobbles)
         {
             var method = "track.scrobble";
 
@@ -64,7 +64,15 @@ namespace KoScrobbler
 
             var response = TryPost<LastFmScrobbleResponse>(method, parameters);
 
-            return response != null ? true : false;
+            if (response == null)
+                return new ScrobbleResponse();
+
+            return new ScrobbleResponse
+            {
+                Success = true,
+                SuccessfulScrobbles = response.Scrobbles.Attributes.Accepted,
+                IgnoredScrobbles = response.Scrobbles.Attributes.Ignored
+            };
         }
 
         private T TryPost<T>(string method, List<KeyValuePair<string, string>> parameters) where  T : new()

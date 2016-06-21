@@ -1,5 +1,4 @@
 ﻿using KoScrobbler.Entities;
-using KoScrobbler.Entities.LastFmApi;
 using System.Collections.Generic;
 
 namespace KoScrobbler.Interfaces
@@ -7,6 +6,7 @@ namespace KoScrobbler.Interfaces
     public interface ILastFmScrobbler
     {
         GetSessionResponse GetMobileSession(string userName, string password);
-        bool TryScrobble(List<Scrobble> scrobbles);
+        ScrobbleResponse TryScrobble(List<Scrobble> scrobbles);
+        string SessionKey { get; set; }
     }
 }

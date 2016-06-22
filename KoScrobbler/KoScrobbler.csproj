@@ -7,8 +7,8 @@
     <ProjectGuid>{D743F496-280B-45B3-AADB-2C3555464225}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KoScrobbler</RootNamespace>
-    <AssemblyName>KoScrobbler</AssemblyName>
+    <RootNamespace>Ko</RootNamespace>
+    <AssemblyName>Ko</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -46,12 +46,14 @@
   <ItemGroup>
     <Compile Include="Entities\Exceptions\SessionKeyInvalidException.cs" />
     <Compile Include="Entities\Exceptions\WebRequestFailedException.cs" />
-    <Compile Include="Entities\GetSessionResponse.cs" />
+    <Compile Include="Entities\GetSessionResult.cs" />
     <Compile Include="Entities\LastFmApi\LastFmGetSessionResponse.cs" />
     <Compile Include="Entities\Base\RequestResponseBase.cs" />
+    <Compile Include="Entities\LastFmApi\LastFmGetUserInfoResponse.cs" />
     <Compile Include="Entities\LastFmApi\LastFmScrobbleResponse.cs" />
+    <Compile Include="Entities\ResumeSessionResult.cs" />
     <Compile Include="Entities\Scrobble.cs" />
-    <Compile Include="Entities\ScrobbleResponse.cs" />
+    <Compile Include="Entities\ScrobbleResult.cs" />
     <Compile Include="Interfaces\ILastFmScrobbler.cs" />
     <Compile Include="KoScrobbler.cs" />
     <Compile Include="LastFmApiClient.cs" />

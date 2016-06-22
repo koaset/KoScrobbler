@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace KoScrobbler
 {
@@ -25,19 +26,53 @@ namespace KoScrobbler
 
             var request = Client.PostAsync(string.Empty, content);
             
-            request.Wait();
-
-            if (request.Result.StatusCode != System.Net.HttpStatusCode.OK)
-                throw new WebRequestException(request.Result);
+            MakeRequest(request);
 
             return GetResponse<T>(request.Result);
         }
 
-        internal T GetResponse<T>(HttpResponseMessage result)
+        internal T Get<T>(string method, List<KeyValuePair<string, string>> parameters)
+        {
+            var query = CreateGetQuery(method, parameters);
+            var request = Client.GetAsync(query);
+
+            MakeRequest(request);
+
+            return GetResponse<T>(request.Result);
+        }
+
+        private T GetResponse<T>(HttpResponseMessage result)
         {
             var responseString = result.Content?.ReadAsStringAsync().Result;
             var response = JsonConvert.DeserializeObject<T>(responseString);
             return response;
+        }
+
+        private void MakeRequest(Task<HttpResponseMessage> request)
+        {
+            request.Wait();
+
+            if (request.Result.StatusCode != System.Net.HttpStatusCode.OK)
+                throw new WebRequestException(request.Result);
+        }
+
+        private string CreateGetQuery(string method, List<KeyValuePair<string, string>> parameters)
+        {
+            var queryParams = new List<KeyValuePair<string, string>>
+            {
+                CreateParam("method", method),
+                CreateParam("api_key", Scrobbler.ApiKey),
+                CreateParam("format", "json")
+            };
+
+            queryParams.AddRange(parameters);
+
+            var url = "?";
+
+            foreach (var parameter in queryParams)
+                url += $"{parameter.Key}={parameter.Value}&";
+
+            return url.TrimEnd('&');
         }
 
         private FormUrlEncodedContent GetContent(string method, List<KeyValuePair<string, string>> parameters)
@@ -56,7 +91,7 @@ namespace KoScrobbler
         {
             var contentParameters = new List<KeyValuePair<string, string>>
             {
-                CreateParam("api_key", KoScrobbler.ApiKey),
+                CreateParam("api_key", Scrobbler.ApiKey),
                 CreateParam("method", method)
             };
 
@@ -75,7 +110,7 @@ namespace KoScrobbler
             var hashString = string.Empty;
             foreach (var parameter in parameters)
                 hashString += parameter.Key + parameter.Value;
-            hashString += KoScrobbler.ApiSecret;
+            hashString += Scrobbler.ApiSecret;
 
             var signature = GetHash(hashString);
 

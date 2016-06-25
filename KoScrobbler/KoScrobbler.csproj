@@ -55,9 +55,9 @@
     <Compile Include="Entities\Scrobble.cs" />
     <Compile Include="Entities\ScrobbleResult.cs" />
     <Compile Include="Interfaces\ILastFmScrobbler.cs" />
-    <Compile Include="KoScrobbler.cs" />
     <Compile Include="LastFmApiClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scrobbler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

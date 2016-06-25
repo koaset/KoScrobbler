@@ -67,7 +67,7 @@ namespace KoScrobbler
             var getInfoResponse = TryGet<LastFmGetUserInfoResponse>(method, parameters);
 
             if (getInfoResponse?.UserInfo == null || 
-                !string.Equals(getInfoResponse.UserInfo.Name, userName, StringComparison.InvariantCulture))
+                !string.Equals(getInfoResponse.UserInfo.Name, userName, StringComparison.InvariantCultureIgnoreCase))
                 return new ValidateSessionResult();
 
             SessionKey = sessionKey;

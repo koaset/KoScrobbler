@@ -117,14 +117,6 @@ namespace KoScrobbler
             return signature;
         }
 
-        private static string ParametersToString(List<KeyValuePair<string, string>> parameters)
-        {
-            var returnString = string.Empty;
-            foreach (var param in parameters)
-                returnString += $"&{param.Key}={param.Value}";
-            return returnString;
-        }
-
         private static string GetHash(string input)
         {
             var byteString = Encoding.UTF8.GetBytes(input);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using KoScrobbler.Entities;
 using KoScrobbler.Entities.Exceptions;
 using KoScrobbler.Entities.LastFmApi;
+using System.Threading.Tasks;
 
 namespace KoScrobbler
 {
@@ -31,7 +32,7 @@ namespace KoScrobbler
             ApiSecret = apiSecret;
         }
 
-        public GetSessionResult CreateSession(string userName, string password)
+        public async Task<GetSessionResult> CreateSessionAsync(string userName, string password)
         {
             var method = "auth.getmobilesession";
 
@@ -41,7 +42,7 @@ namespace KoScrobbler
                 new KeyValuePair<string, string>("password", password)
             };
 
-            var response = TryPost<LastFmGetSessionResponse>(method, parameters);
+            var response = await TryPost<LastFmGetSessionResponse>(method, parameters);
 
             if (response?.Session == null)
                 return new GetSessionResult();
@@ -53,7 +54,7 @@ namespace KoScrobbler
             };
         }
 
-        public ValidateSessionResult ValidateSession(string userName, string sessionKey)
+        public async Task<ValidateSessionResult> ValidateSessionAsync(string userName, string sessionKey)
         {
             var method = "user.getInfo";
 
@@ -64,7 +65,7 @@ namespace KoScrobbler
                 new KeyValuePair<string, string>("sk", sessionKey)
             };
 
-            var getInfoResponse = TryGet<LastFmGetUserInfoResponse>(method, parameters);
+            var getInfoResponse = await TryGet<LastFmGetUserInfoResponse>(method, parameters);
 
             if (getInfoResponse?.UserInfo == null || 
                 !string.Equals(getInfoResponse.UserInfo.Name, userName, StringComparison.InvariantCultureIgnoreCase))
@@ -80,7 +81,7 @@ namespace KoScrobbler
             };
         }
 
-        public ScrobbleResult TryScrobble(List<Scrobble> scrobbles)
+        public async Task<ScrobbleResult> ScrobbleAsync(List<Scrobble> scrobbles)
         {
             var method = "track.scrobble";
 
@@ -97,7 +98,7 @@ namespace KoScrobbler
                 parameters.Add(new KeyValuePair<string, string>($"chosenByUser[{i}]", "0"));
             }
 
-            var response = TryPost<LastFmScrobbleResponse>(method, parameters);
+            var response = await TryPost<LastFmScrobbleResponse>(method, parameters);
 
             if (response.Scrobbles == null)
                 return new ScrobbleResult();
@@ -110,11 +111,11 @@ namespace KoScrobbler
             };
         }
 
-        private T TryPost<T>(string method, List<KeyValuePair<string, string>> parameters) where  T : new()
+        private async Task<T> TryPost<T>(string method, List<KeyValuePair<string, string>> parameters) where  T : new()
         {
             try
             {
-                return Client.Post<T>(method, parameters);
+                return await Client.Post<T>(method, parameters);
             }
             catch (WebRequestException)
             {
@@ -122,11 +123,11 @@ namespace KoScrobbler
             }
         }
 
-        private T TryGet<T>(string method, List<KeyValuePair<string, string>> parameters) where T : new()
+        private async Task<T> TryGet<T>(string method, List<KeyValuePair<string, string>> parameters) where T : new()
         {
             try
             {
-                return Client.Get<T>(method, parameters);
+                return await Client.Get<T>(method, parameters);
             }
             catch (WebRequestException)
             {

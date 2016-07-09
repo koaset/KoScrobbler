@@ -20,40 +20,32 @@ namespace KoScrobbler
             Client.BaseAddress = new Uri("https://ws.audioscrobbler.com/2.0/");
         }
 
-        internal T Post<T>(string method, List<KeyValuePair<string, string>> parameters)
+        internal async Task<T> Post<T>(string method, List<KeyValuePair<string, string>> parameters)
         {
             var content = GetContent(method, parameters);
 
-            var request = Client.PostAsync(string.Empty, content);
-            
-            MakeRequest(request);
+            var result = await Client.PostAsync(string.Empty, content);
 
-            return GetResponse<T>(request.Result);
+            return GetResponse<T>(result);
         }
 
-        internal T Get<T>(string method, List<KeyValuePair<string, string>> parameters)
+        internal async Task<T> Get<T>(string method, List<KeyValuePair<string, string>> parameters)
         {
             var query = CreateGetQuery(method, parameters);
-            var request = Client.GetAsync(query);
 
-            MakeRequest(request);
+            var result = await Client.GetAsync(query);
 
-            return GetResponse<T>(request.Result);
+            return GetResponse<T>(result);
         }
 
         private T GetResponse<T>(HttpResponseMessage result)
         {
+            if (result.StatusCode != System.Net.HttpStatusCode.OK)
+                throw new WebRequestException(result);
+
             var responseString = result.Content?.ReadAsStringAsync().Result;
             var response = JsonConvert.DeserializeObject<T>(responseString);
             return response;
-        }
-
-        private void MakeRequest(Task<HttpResponseMessage> request)
-        {
-            request.Wait();
-
-            if (request.Result.StatusCode != System.Net.HttpStatusCode.OK)
-                throw new WebRequestException(request.Result);
         }
 
         private string CreateGetQuery(string method, List<KeyValuePair<string, string>> parameters)

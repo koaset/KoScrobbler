@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>KoScrobbler</id>
+    <version>1.0.0</version>
+    <authors>Karl-Oskar Smed</authors>
+    <owners>Karl-Oskar Smed</owners>
+    <licenseUrl>https://github.com/koaset/KoScrobbler/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/koaset</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simple last.fm scrobbler.</description>
+    <releaseNotes>Supports getting a session, validating it and scrobbling songs.</releaseNotes>
+    <copyright>Copyright Karl-Oskar Smed 2016</copyright>
+    <tags>c# last.fm scrobble scrobbling scrobbler</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="8.0.3" />
+    </dependencies>
+  </metadata>
+</package>

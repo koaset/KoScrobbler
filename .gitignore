@@ -4,4 +4,5 @@ KoScrobbler/obj/
 packages/
 Release/
 KoScrobbler.sln
-.vs
+*.vs
+*.nupkg
